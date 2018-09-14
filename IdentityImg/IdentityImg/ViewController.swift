@@ -14,6 +14,8 @@ final class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        let identity = Identity(hash: "3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj", options: Identity.Options.defaultOptions)
         // Do any additional setup after loading the view, typically from a nib.
     }
 

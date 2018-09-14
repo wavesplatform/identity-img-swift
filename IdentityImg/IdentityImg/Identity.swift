@@ -18,11 +18,11 @@ extension Identity {
         let rows: Int
         let cells: Int
         let isRandomColor: Bool
-        let mainStep: Int
-        let nanStep: Int
+        let mainStep: Float
+        let nanStep: Float
         let mainLen: Float
         let nanLen: Float
-        let bgStep: Int
+        let bgStep: Float
         let bgLen: Float
     }
 }
@@ -79,20 +79,21 @@ final class Identity {
     init(hash: String, options: Options) {
         self.options = options
 
-        let data = fillMatrix(hash: hash, options: options)
+        let data = Identity.fillMatrix(hash: hash, options: options)
         self.hash = data.hash
         self.hashMatrix = data.hashMatrix
+
+        Identity.hashToColor(hash: hash, step: options.bgStep, length: 5)
     }
 
-    private func fillMatrix(hash: String, options: Options) -> (hashMatrix:  [[Int]], hash: String) {
+    private static func fillMatrix(hash: String, options: Options) -> (hashMatrix:  [[Int]], hash: String) {
 
         var i = 0
-        var hashMatrix: [[Int]] = .init()
+        var hashMatrix: Array<Array<Int>> = Array<Array<Int>>(repeating: Array<Int>(repeating: 0, count: options.rows), count: options.cells);
         var newHash = hash
 
-        for x  in 0...options.cells {
-            hashMatrix[x] = []
-            for y in 0...options.rows {
+        for x  in 0..<options.cells {
+            for y in 0..<options.rows {
 
                 if  newHash.symbol(by: i) == nil {
                     newHash += hash
@@ -103,10 +104,30 @@ final class Identity {
                 i += 1
             }
         }
+
+        return (hashMatrix: hashMatrix, hash: newHash)
+    }
+
+    private static func hashToColor(hash: String, step: Float, length: Int) {
+
+        var symbols: [String] = hash.map { String($0) }
+        var color: [String] = []
+
+        repeat {
+
+            let normalizedLength = min(symbols.count, length)
+            let newSymbols = Array(symbols[0..<normalizedLength])
+            color.append(contentsOf: newSymbols)
+
+            symbols = Array(symbols[normalizedLength..<symbols.count])
+        } while symbols.count > 0
+
+        color.reduce(into: <#T##Result#>, <#T##updateAccumulatingResult: (inout Result, String) throws -> ()##(inout Result, String) throws -> ()#>)
     }
 
 
-//    private static hashToColor(hash: string, step: number, length: number) {
+
+
 //            const parse = (part: string) => {
 //            const arr = part.split('');
 //            const tmp = [];
