@@ -10,20 +10,61 @@ import UIKit
 
 final class ViewController: UIViewController {
 
-    @IBOutlet var imageViews: [UIImageView]!
+    private let identity = Identity(options: Identity.defaultOptions)
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
 
-        let identity = Identity(hash: "3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj", options: Identity.Options.defaultOptions)
-        // Do any additional setup after loading the view, typically from a nib.
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
 }
 
+final class ImageCell: UITableViewCell {
+    @IBOutlet var iconView: UIImageView!
+}
+
+extension ViewController: UITableViewDataSource, UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10000
+    }
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        let cell: ImageCell = tableView.dequeueReusableCell(withIdentifier: "ImageCell") as! ImageCell
+        let hash = randomString(length: Int(arc4random() % 1000))
+        cell.iconView.image = identity.createImage(by: hash, size: cell.frame.size)
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return tableView.frame.size.width
+    }
+}
+
+func randomString(length: Int) -> String {
+
+    let letters: NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    let len = UInt32(letters.length)
+
+    var randomString = ""
+
+    for _ in 0 ..< length {
+        let rand = arc4random_uniform(len)
+        var nextChar = letters.character(at: Int(rand))
+        randomString += NSString(characters: &nextChar, length: 1) as String
+    }
+
+    return randomString
+}
