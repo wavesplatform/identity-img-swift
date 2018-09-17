@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension Identity {
+public extension Identity {
 
     struct Options {
         enum Palette {
@@ -51,11 +51,11 @@ public final class Identity {
     fileprivate typealias Colors = (background: UIColor, main: UIColor, hollow: UIColor)
 
     private let options: Options
-    init(options: Options) {
+    public init(options: Options) {
         self.options = options
     }
 
-    public func createImage(by hash: String, size: CGSize) -> UIImage? {
+    public func createImage(by hash: String, size: CGSize) -> UIImage {
 
         UIGraphicsBeginImageContextWithOptions(size, true, UIScreen.main.scale)
         guard let context = UIGraphicsGetCurrentContext() else { return UIImage() }
