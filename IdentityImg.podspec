@@ -5,6 +5,6 @@ Pod::Spec.new do |spec|
   spec.homepage     = 'https://github.com/wavesplatform/identity-img-swift'
   spec.authors      = { 'Mefilt' => 'Mefilt' }
   spec.summary      = 'Mefilt'
-  spec.source       = { 'path' => 'IdentityImg/IdentityImg/Source' }
-  spec.source_files = 'Source/*.{swift}'
+  spec.source       = { 'path' => '' }
+  spec.source_files = 'IdentityImg/IdentityImg/Source/*.{swift}'
 end
