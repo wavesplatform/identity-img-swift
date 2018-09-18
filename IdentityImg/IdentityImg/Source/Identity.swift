@@ -55,10 +55,10 @@ public final class Identity {
         self.options = options
     }
 
-    public func createImage(by hash: String, size: CGSize) -> UIImage {
+    public func createImage(by hash: String, size: CGSize) -> UIImage? {
 
         UIGraphicsBeginImageContextWithOptions(size, true, UIScreen.main.scale)
-        guard let context = UIGraphicsGetCurrentContext() else { return UIImage() }
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
 
         let grid = options.grid
         let colors = Identity.colors(from: options, hash: hash)
